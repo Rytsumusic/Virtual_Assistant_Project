@@ -3,54 +3,57 @@ import pyttsx3
 import pyaudio
 import platform
 import datetime
-# Initialize the speech recognition engine
-r = sr.Recognizer()
+import wikipedia
+import pywhatkit
 
-# Initialize the text-to-speech engine
+listener = sr.Recognizer()
+
 engine = pyttsx3.init()
 
-# Function to listen for the wake word "Hello"
-def listen_for_wake_word():
-    while True:
-        with sr.Microphone() as source:
-            print("Listening...")
-            audio = r.listen(source)
-
-        try:
-            # Use Google Speech Recognition to convert speech to text
-            text = r.recognize_google(audio)
-            if "hello" in text.lower():
-                return True
-        except sr.UnknownValueError:
-            print("Sorry, I didn't catch that.")
-        except sr.RequestError:
-            print("Sorry, I'm having trouble with my speech recognition service.")
-
-def get_system_info():
-    system_info = {
-        "Operating System": platform.system(),
-        "Processor": platform.processor(),
-        "Memory": f"{round(platform.virtual_memory().total / (1024 ** 3), 2)} GB",
-        "Python Version": platform.python_version(),
-        "System Time": f"{datetime.datetime.now().hour}:{datetime.datetime.now().minute}"
-    }
-    return system_info
-
-def respond():
-    engine.say("How can I assist you?")
+def speak(text):
+    engine.say(text)
     engine.runAndWait()
 
-text = ""  # Define the 'text' variable outside the function
-while True:
-    if listen_for_wake_word():
-        if "nevermind" in text.lower() or "goodbye" in text.lower():
-            engine.say("Goodbye!")
-            engine.runAndWait()
-            break
-        elif "system info" in text.lower():
-            system_info = get_system_info()
-            for key, value in system_info.items():
-                engine.say(f"{key}: {value}")
-            engine.runAndWait()
-        else:
-            respond()
+def command():
+    try:
+        with sr.Microphone as source:
+            print("Im listening..... Waiting for a response")
+            voice = listener.listen(source)
+            command = listener.recognize_google(voice)
+            command = command.lower()
+            if "hello" in command:
+                command= command.replace("hello", "")
+    except:
+        pass
+    return command
+
+def run_assistant():
+    order = command()
+    print(order)
+
+    if 'time' in order:
+        time = datetime.datetime.now().strftime('%I:%M %p')
+        speak("The current time is " + time)
+    
+    elif 'play' in order:
+        play = order.replace('play', '')
+        speak('Playing ' + play)
+        pywhatkit.playonyt(play)
+
+    elif "search" in order:
+        search = order.replace("search", "")
+        info = wikipedia.summary(search, 1)
+        print(info)
+        speak(info)
+
+    elif "who is" in order:
+        person = order.replace("who is", "")
+        info = wikipedia.summary(person, 1)
+        print(info)
+        speak(info)
+
+    else:
+        speak("I did not understand what you said. Please try again and speak clearly.")
+    
+
+        
