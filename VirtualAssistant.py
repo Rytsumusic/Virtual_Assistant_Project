@@ -1,7 +1,5 @@
 import speech_recognition as sr
 import pyttsx3
-import pyaudio
-import platform
 import datetime
 import wikipedia
 import pywhatkit
@@ -51,6 +49,22 @@ def run_assistant():
         info = wikipedia.summary(person, 1)
         print(info)
         speak(info)
+    
+    elif"what is" in order:
+        thing = order.replace("what is", "")
+        info = wikipedia.summary(thing, 1)
+        print(info)
+        speak(info)
+    
+    elif "where is" in order:
+        place = order.replace("where is", "")
+        info = wikipedia.summary(place, 1)
+        print(info)
+        speak(info)
+    
+    elif "goodbye"&"nevermind"&"bye" in order:
+        speak("Goodbye, have a nice day!")
+        exit()
 
     else:
         speak("I did not understand what you said. Please try again and speak clearly.")
