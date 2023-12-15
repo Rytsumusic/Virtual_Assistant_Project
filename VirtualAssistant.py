@@ -1,14 +1,15 @@
 import speech_recognition as sr
 import pyttsx3
 import pyaudio
-
+import platform
+import datetime
 # Initialize the speech recognition engine
 r = sr.Recognizer()
 
 # Initialize the text-to-speech engine
 engine = pyttsx3.init()
 
-# Function to listen for the wake word "Hey Maggie"
+# Function to listen for the wake word "Hello"
 def listen_for_wake_word():
     while True:
         with sr.Microphone() as source:
@@ -25,6 +26,15 @@ def listen_for_wake_word():
         except sr.RequestError:
             print("Sorry, I'm having trouble with my speech recognition service.")
 
+def get_system_info():
+    system_info = {
+        "Operating System": platform.system(),
+        "Processor": platform.processor(),
+        "Memory": f"{round(platform.virtual_memory().total / (1024 ** 3), 2)} GB",
+        "Python Version": platform.python_version(),
+        "System Time": f"{datetime.datetime.now().hour}:{datetime.datetime.now().minute}"
+    }
+    return system_info
 
 def respond():
     engine.say("How can I assist you?")
@@ -37,5 +47,10 @@ while True:
             engine.say("Goodbye!")
             engine.runAndWait()
             break
+        elif "system info" in text.lower():
+            system_info = get_system_info()
+            for key, value in system_info.items():
+                engine.say(f"{key}: {value}")
+            engine.runAndWait()
         else:
             respond()
