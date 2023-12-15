@@ -72,7 +72,6 @@ def run_assistant():
         speak("Goodbye, have a nice day!")
         exit()
     
-
     else:
         speak("I did not understand what you said. Please try again and speak clearly.")
     
