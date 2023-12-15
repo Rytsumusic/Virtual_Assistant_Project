@@ -14,7 +14,7 @@ def speak(text):
 
 def command():
     try:
-        with sr.Microphone as source:
+        with sr.Microphone() as source:  # Added parentheses after sr.Microphone
             print("Im listening..... Waiting for a response")
             voice = listener.listen(source)
             command = listener.recognize_google(voice)
@@ -30,7 +30,7 @@ def run_assistant():
     print(order)
 
     if 'time' in order:
-        time = datetime.datetime.now().strftime('%I:%M %p')
+        time = datetime.datetime.now().strftime('%I%M %p')
         speak("The current time is " + time)
     
     elif 'play' in order:
