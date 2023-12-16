@@ -1,6 +1,7 @@
 import speech_recognition as sr
 import pyttsx3
 import datetime
+import pyaudio
 import wikipedia
 import pywhatkit
 
@@ -16,6 +17,7 @@ def command():
     try:
         with sr.Microphone() as source:
             print("I'm listening... Waiting for a response")
+            listener.adjust_for_ambient_noise(source)  # Adjust for ambient noise
             voice = listener.listen(source)
             command = listener.recognize_google(voice)
             command = command.lower()
@@ -35,6 +37,9 @@ def run_assistant():
     if 'time' in order:
         time = datetime.datetime.now().strftime('%I%M %p')
         speak("The current time is " + time)
+    
+    elif'hello' in order:
+        speak("Hello, how are you? My name is max. I am your virtual assistant. How can I help you?")
     
     elif 'play' in order:
         play = order.replace('play', '')
