@@ -32,11 +32,8 @@ def run_assistant():
 
     print(order)
 
-    if 'hello' in order:
-        speak("Hi. I am your virtual assistant. How can I be of service?")
-
-    elif 'time' in order:
-        time = datetime.datetime.now().strftime('%I:%M %p')
+    if 'time' in order:
+        time = datetime.datetime.now().strftime('%I%M %p')
         speak("The current time is " + time)
     
     elif 'play' in order:
@@ -72,7 +69,6 @@ def run_assistant():
         speak("Goodbye, have a nice day!")
         exit()
     
-
     else:
         speak("I did not understand what you said. Please try again and speak clearly.")
     
