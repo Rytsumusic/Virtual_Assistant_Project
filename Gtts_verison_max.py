@@ -3,13 +3,14 @@ from gtts import gTTS
 import datetime
 import wikipedia
 import pywhatkit
+import playsound
 
 listener = sr.Recognizer()
 
 def speak(text):
     tts = gTTS(text=text, lang='en')
     tts.save('output.mp3')
-    # Code to play the audio file 'output.mp3'
+    playsound.playsound('output.mp3')
 
 def get_command():
     try:
@@ -19,8 +20,8 @@ def get_command():
             voice = listener.listen(source)
             command = listener.recognize_google(voice)
             command = command.lower()
-            if "hello" in command:
-                command = command.replace("hello", "")
+            if "max" in command:
+                command = command.replace("max", "")
     except sr.UnknownValueError:
         print("Sorry, I couldn't understand you. Please try again.")
         return None
