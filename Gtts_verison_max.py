@@ -74,6 +74,27 @@ def run_assistant():
         info = wikipedia.summary(place, 1)
         print(info)
         speak(info)
+    
+    elif "set a timer" in order:
+        timer = order.replace("set a timer", "")
+        speak("Setting a timer for " + timer + " seconds")
+        timer = int(timer)
+        timer = timer * 60
+        time.sleep(timer)
+        speak("Your timer has ended")
+    
+    elif "add"+[item]+ "to a list" in order:
+        item = order.replace("add", "")
+        speak("Adding " + item + " to your list")
+        with open("list.txt", "a") as f:
+            f.write(item + "\n")
+        f.close()
+    
+    elif "show me my list" in order:
+        speak("Here is your list")
+        with open("list.txt", "r") as f:
+            print(f.read())
+        f.close()
 
     elif any(keyword in order for keyword in ["goodbye", "nevermind", "bye"]):
         speak("Goodbye, have a nice day!")
