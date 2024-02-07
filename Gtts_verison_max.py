@@ -4,6 +4,7 @@ import datetime
 import wikipedia
 import pywhatkit
 import playsound
+import os
 
 listener = sr.Recognizer()
 
@@ -20,8 +21,8 @@ def get_command():
             voice = listener.listen(source)
             command = listener.recognize_google(voice)
             command = command.lower()
-            if "max" in command:
-                command = command.replace("max", "")
+            if "biddu" in command:
+                command = command.replace("maggie", "")
     except sr.UnknownValueError:
         print("Sorry, I couldn't understand you. Please try again.")
         return None
@@ -38,13 +39,12 @@ def run_assistant():
         return run_assistant()
 
     print(order)
+    if 'hello' in order:
+        speak("Hello, how are you? My name is Max. I am your virtual assistant. How can I help you?")
 
-    if 'time' in order:
+    elif 'time' in order:
         time = datetime.datetime.now().strftime('%I:%M %p')
         speak("The current time is " + time)
-
-    elif 'hello' in order:
-        speak("Hello, how are you? My name is Max. I am your virtual assistant. How can I help you?")
 
     elif 'play' in order:
         play = order.replace('play', '')
@@ -75,8 +75,8 @@ def run_assistant():
         print(info)
         speak(info)
     
-    elif "set a timer" in order:
-        timer = order.replace("set a timer", "")
+    elif "timer" in order:
+        timer = order.replace("timer", "")
         speak("Setting a timer for " + timer + " seconds")
         timer = int(timer)
         timer = timer * 60
@@ -95,6 +95,22 @@ def run_assistant():
         with open("list.txt", "r") as f:
             print(f.read())
         f.close()
+    
+    elif"clear my list" in order:
+        speak("Clearing your list")
+        with open("list.txt", "w") as f:
+            f.write("")
+        f.close()
+    
+    elif "what is on my list" in order:
+        speak("Here is your list")
+        with open("list.txt", "r") as f:
+            print(f.read())
+        f.close()
+    
+    elif"open spotify on my desktop" in order:
+        speak("Opening Spotify")
+        os.system("open -a Spotify")
 
     elif any(keyword in order for keyword in ["goodbye", "nevermind", "bye"]):
         speak("Goodbye, have a nice day!")
